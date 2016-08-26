@@ -1,0 +1,56 @@
+version: '2'
+
+services:
+    backend:
+        build: backend
+        command: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+        container_name: assistant-backend
+        restart: always
+        working_dir: /data
+        environment:
+            - TERM=xterm
+            - DEBIAN_FRONTEND=noninteractive
+        expose:
+            - "80"
+        ports:
+            - "127.0.0.2:80:80"
+        links:
+            - mongo:mongo
+        volumes:
+            - ${ASSISTANT_BACKEND_VOLUME}:/data
+            - ${ASSISTANT_COLLECTION_VOLUME}:/collection
+        depends_on:
+            - mongo
+
+    web:
+        build: web
+        command: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+        container_name: assistant-web
+        hostname: ${ASSISTANT_WEB_HOSTNAME}
+        restart: always
+        working_dir: /data
+        environment:
+            - TERM=xterm
+            - DEBIAN_FRONTEND=noninteractive
+        expose:
+            - "80"
+        ports:
+            - "127.0.0.3:80:80"
+        links:
+            - mongo
+            - backend
+        volumes:
+            - ${ASSISTANT_WEB_VOLUME}:/data
+            - ${ASSISTANT_COLLECTION_VOLUME}:/collection
+        depends_on:
+            - backend
+            - mongo
+
+    mongo:
+        image: mongo
+        container_name: assistant-mongo
+        restart: always
+        ports:
+            - "127.0.0.2:27017:27017"
+        volumes:
+            - ${ASSISTANT_DATABASE_VOLUME}:/data/db
