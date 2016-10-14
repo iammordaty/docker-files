@@ -5,8 +5,7 @@ FROM php:5.6-fpm
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     libssl-dev \
-    locales \
-    vim
+    locales
 
 # PHP extensions
 
@@ -37,4 +36,3 @@ RUN echo "xdebug.cli_color=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug
 
 RUN curl -sS https://getcomposer.org/installer | php  && \
     mv composer.phar /usr/local/bin/composer.phar
-
