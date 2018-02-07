@@ -11,6 +11,7 @@ RUN apt-get update && \
     bpm-tools \
     build-essential \
     cmake \
+    git \
     libavcodec-dev \
     libavformat-dev \
     libavresample-dev \
