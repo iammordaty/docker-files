@@ -2,7 +2,7 @@ version: '2'
 
 services:
     mongo:
-        image: mongo
+        image: mongo:3.4
         container_name: assistant-mongo
         restart: always
         expose:
