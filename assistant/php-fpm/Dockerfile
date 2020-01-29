@@ -1,26 +1,36 @@
-FROM php:5.6-fpm
+FROM php:7.4-fpm
+
+ENV TERM=xterm
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # installation
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    git \
+    curl \
+    libcurl4-gnutls-dev \
     libssl-dev \
-    locales
+    libzip-dev \
+    locales \
+    unzip \
+    vim;
 
 # PHP extensions
 
-RUN pecl install inotify-0.1.6 && \
+RUN pecl install inotify && \
     docker-php-ext-enable inotify
 
-RUN pecl install xdebug-2.5.5 && \
+RUN docker-php-ext-configure zip && \
+    docker-php-ext-install zip
+
+RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
 
-RUN pecl install mongo && \
-    docker-php-ext-enable mongo
+RUN pecl install mongodb && \
+    docker-php-ext-enable mongodb
 
-RUN apt-get autoremove && \
-    apt-get clean
+RUN apt-get -y autoremove && \
+    apt-get -y clean
 
 # locale
 
