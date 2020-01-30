@@ -8,12 +8,13 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     curl \
+    git \
     libcurl4-gnutls-dev \
     libssl-dev \
     libzip-dev \
     locales \
     unzip \
-    vim;
+    vim-tiny;
 
 # PHP extensions
 
